@@ -102,8 +102,9 @@ const sendChatMessage = async (content: string = messageContent.value) => {
     if (messageList.value.length === 2) {
       messageList.value.pop();
     }
-    messageList.value.push({ role: "user", content });
     clearMessageContent();
+
+    messageList.value.push({ role: "user", content });
     messageList.value.push({ role: "assistant", content: "" });
 
     const { body, status } = await chat(messageList.value, getAPIKey());
@@ -148,10 +149,11 @@ const readStream = async (
       if (line.startsWith(":")) continue; // ignore sse comment message
       if (line === "data: [DONE]") return; //
 
-      const json = JSON.parse(line.substring(6)); // start with "data: "
+      const json = JSON.parse(line.substring(5)); // start with "data: "
+      console.log(json.choices[0].content);
       const content =
         status === 200
-          ? json.choices[0].delta.content ?? ""
+          ? json.choices[0].message.content ?? ""
           : json.error.message;
       appendLastMessageContent(content);
     }

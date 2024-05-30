@@ -2,7 +2,7 @@ import type { ChatMessage } from "@/types";
 
 export async function chat(messageList: ChatMessage[], apiKey: string) {
   try {
-    const result = await fetch("https://api.openai.com/v1/chat/completions", {
+    const result = await fetch("http://localhost:8080/ai/chat/stream", {
       method: "post",
       // signal: AbortSignal.timeout(8000),
       // 开启后到达设定时间会中断流式输出
@@ -11,9 +11,7 @@ export async function chat(messageList: ChatMessage[], apiKey: string) {
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        stream: true,
-        messages: messageList,
+        content: JSON.stringify(messageList)
       }),
     });
     return result;
