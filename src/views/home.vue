@@ -64,7 +64,7 @@ import Loding from "@/components/Loding.vue";
 import Copy from "@/components/Copy.vue";
 import { md } from "@/libs/markdown";
 
-let apiKey = "";
+let apiKey = "222222";
 let isConfig = ref(true);
 let isTalking = ref(false);
 let messageContent = ref("");
