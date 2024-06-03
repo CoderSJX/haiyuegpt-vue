@@ -11,7 +11,7 @@ const mdOptions: Markdown.Options = {
     if (lang && highlight.getLanguage(lang)) {
       try {
         return (
-          '<pre class="hljs"><code>' +
+          '<pre class="hljs code-block"><code>' +
           highlight.highlight(lang, str, true).value +
           "</code></pre>"
         );

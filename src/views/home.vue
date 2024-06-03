@@ -17,7 +17,7 @@
       >
         <div class="bg-gray-100 rounded-3xl p-5 ">
           <div
-            class="prose text-sm leading-relaxed"
+            class="prose text-sm leading-relaxed max-w-80"
             v-if="item.content"
             v-html="md.render(item.content)"
           ></div>

@@ -5,6 +5,12 @@
   .no-focus-shadow:focus {
     box-shadow: none !important; /* 使用 !important 确保样式被优先应用 */
   }
+  .code-block {
+    overflow-x: auto; /* 启用水平滚动条，当内容超出时 */
+    white-space: pre-wrap; /* 保持代码原有的空格和换行 */
+    word-break: normal; /* 保持单词完整性，避免断词 */
+    max-width: 500px; /* 或者设置为你希望的最大宽度，如 800px */
+  }
 }
 @layer components {
   .btn {
