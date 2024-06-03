@@ -18,10 +18,11 @@
   "dependencies": {
     "@icon-park/vue-next": "^1.4.2",
     "@tailwindcss/typography": "^0.5.9",
-    "crypto-js": "^4.1.1",
+    "@vueuse/core": "^10.10.0",
     "highlight.js": "^11.7.0",
     "markdown-it": "^13.0.1",
     "vue": "^3.2.47",
+    "vue-directive-long-press": "^1.1.0",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
