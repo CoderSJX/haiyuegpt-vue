@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-screen">
+  <div class="flex flex-col h-screen ">
 <!--    <div-->
 <!--      class="flex flex-nowrap fixed w-full items-baseline top-0 px-6 py-4 bg-gray-100"-->
 <!--    >-->
@@ -15,9 +15,9 @@
         :class="item.role=='assistant'?'justify-start':'justify-end'"
         v-for="item of messageList.filter((v) => v.role !== 'system')"
       >
-        <div class="bg-blue-500 rounded-3xl p-5">
+        <div class="bg-gray-100 rounded-3xl p-5 ">
           <div
-            class="prose text-sm text-white leading-relaxed"
+            class="prose text-sm leading-relaxed"
             v-if="item.content"
             v-html="md.render(item.content)"
           ></div>
@@ -123,7 +123,6 @@ const readStream = async (
       if (line === "data: [DONE]") return; //
 
       const json = JSON.parse(line.substring(5)); // start with "data: "
-      console.log(json.choices[0].content);
       const content =
         status === 200
           ? json.choices[0].message.content ?? ""
