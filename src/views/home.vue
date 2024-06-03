@@ -23,7 +23,7 @@
         <div class="bg-gray-100 rounded-3xl p-5 ">
           <div
             class="prose text-sm leading-relaxed "
-            :style="{ maxWidth: screenWidth + 'px' }"
+            :style="{ maxWidth: screenWidth-80 + 'px' }"
             v-if="item.content"
             v-html="md.render(item.content)"
           ></div>
