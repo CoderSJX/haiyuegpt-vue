@@ -1,5 +1,10 @@
 <template>
-  <div class="flex flex-col h-screen ">
+  <div class="flex flex-col h-screen scrollable-content " ref="scrollableContent"
+       @touchstart="handleTouchStart"
+       @touchmove="handleTouchMove"
+       @touchend="handleTouchEnd"
+       @touchcancel="handleTouchCancel"
+       >
 <!--    <div-->
 <!--      class="flex flex-nowrap fixed w-full items-baseline top-0 px-6 py-4 bg-gray-100"-->
 <!--    >-->
@@ -68,10 +73,56 @@ const messageList = ref<ChatMessage[]>([
 ]);
 
 const screenWidth = ref(window.innerWidth);
-
+const scrollableContent = ref(null);
+const startY = ref(0);
+const currentY = ref(0);
+const isPullingDown = ref(false);
+const pullDownThreshold = 100; // 下拉刷新的阈值，单位为px
 const handleResize = () => {
   screenWidth.value = window.innerWidth;
 };
+const handleTouchStart = (event) => {
+  startY.value = event.touches[0].clientY;
+};
+
+// 触摸移动
+const handleTouchMove = (event) => {
+  if (!isPullingDown.value) {
+    currentY.value = event.touches[0].clientY;
+    const deltaY = currentY.value - startY.value;
+
+    // 判断是否向下拉动并且超过阈值
+    if (deltaY > 0 && deltaY > pullDownThreshold) {
+      isPullingDown.value = true;
+    }
+  }
+};
+
+// 触摸结束或取消
+const handleTouchEnd = () => {
+  if (isPullingDown.value && currentY.value - startY.value > pullDownThreshold) {
+    // 这里触发重新加载
+    reloadPage();
+  }
+  isPullingDown.value = false;
+  startY.value = 0;
+  currentY.value = 0;
+};
+
+// 取消触摸时重置状态
+const handleTouchCancel = () => {
+  isPullingDown.value = false;
+  startY.value = 0;
+  currentY.value = 0;
+};
+
+// 重新加载页面的模拟函数
+const reloadPage = () => {
+  console.log('触发页面重新加载');
+  window.location.reload()
+  // 实际应用中，你可以在这里调用API获取新数据或使用window.location.reload()来刷新页面
+};
+
 onMounted(() => {
   window.addEventListener('resize', handleResize);
 });
