@@ -122,7 +122,7 @@ async function startRecording(e: TouchEvent) {
 
   isRecording.value = false;
 
-  let audio = amrRec.getBlob();
+  let audio = <Blob>amrRec.getBlob();
   const audioFile: File = new File([audio], 'recording.amr', );
   uploadAudio(audioFile);
   amrRec.destroy();
