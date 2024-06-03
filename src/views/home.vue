@@ -17,7 +17,8 @@
       >
         <div class="bg-gray-100 rounded-3xl p-5 ">
           <div
-            class="prose text-sm leading-relaxed max-w-80"
+            class="prose text-sm leading-relaxed "
+            :style="{ maxWidth: screenWidth + 'px' }"
             v-if="item.content"
             v-html="md.render(item.content)"
           ></div>
@@ -47,7 +48,7 @@
 
 <script setup lang="ts">
 import type { ChatMessage } from "@/types";
-import { ref, watch, nextTick, onMounted } from "vue";
+import { ref, watch, nextTick, onMounted,onBeforeUnmount } from "vue";
 import { chat } from "@/libs/gpt";
 import Loding from "@/components/Loding.vue";
 import Copy from "@/components/Copy.vue";
@@ -66,7 +67,17 @@ const messageList = ref<ChatMessage[]>([
   },
 ]);
 
+const screenWidth = ref(window.innerWidth);
+
+const handleResize = () => {
+  screenWidth.value = window.innerWidth;
+};
 onMounted(() => {
+  window.addEventListener('resize', handleResize);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', handleResize);
 });
 
 const sendChatMessage = async (content: string = messageContent.value) => {
