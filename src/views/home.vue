@@ -42,7 +42,14 @@
           v-model="messageContent"
           @keydown.enter="isTalking || send()"
         />
-        <button class="btn self-end rounded-2xl text-xs h-8 w-20 flex justify-center items-center mr-1 " :disabled="isTalking" @click="send()">
+        <div class="touch-record absolute bottom-1 left-0 right-0 flex items-center justify-center" >
+          <button   @touchstart="startRecording" @touchend="amrRec.finishRecord()" class="shadow-2xl" >
+<!--            {{ isRecording ? '松开' : '按下录音' }}-->
+            <voice class="shadow-2xl" v-show="!isRecording"  size="30" fill="#1d4ed8" strokeLinecap="square"/>
+            <voice-one class="shadow-1xl" v-show="isRecording"  size="30" fill="#1d4ed8" strokeLinecap="square"/>
+          </button>
+        </div>
+        <button class="btn self-end rounded-2xl text-xs h-8 w-20 flex justify-center items-center mr-1 shadow-blue-400 " :disabled="isTalking" @click="send()">
           {{"发送" }}
         </button>
 
@@ -52,12 +59,15 @@
 </template>
 
 <script setup lang="ts">
+import { Voice,VoiceOne } from "@icon-park/vue-next";
+
 import type { ChatMessage } from "@/types";
 import { ref, watch, nextTick, onMounted,onBeforeUnmount } from "vue";
 import { chat } from "@/libs/gpt";
 import Loding from "@/components/Loding.vue";
 import Copy from "@/components/Copy.vue";
 import { md } from "@/libs/markdown";
+
 
 let isTalking = ref(false);
 let messageContent = ref("");
@@ -77,7 +87,65 @@ const scrollableContent = ref(null);
 const startY = ref(0);
 const currentY = ref(0);
 const isPullingDown = ref(false);
-const pullDownThreshold = 100; // 下拉刷新的阈值，单位为px
+const pullDownThreshold = 200; // 下拉刷新的阈值，单位为px
+
+let amrRec:BenzAMRRecorder;
+
+
+import axios from 'axios';
+import BenzAMRRecorder from "benz-amr-recorder";
+
+const isRecording = ref(false);
+
+onMounted(() => {
+  // 初始化逻辑，比如请求麦克风权限
+});
+
+async function startRecording(e: TouchEvent) {
+  isRecording.value = true;
+  try {
+    amrRec=new BenzAMRRecorder;
+    await amrRec.initWithRecord();
+    amrRec.startRecord();
+    amrRec.onFinishRecord(()=>{
+      stopAndUpload()
+    })
+  } catch (error) {
+    console.error('录音权限被拒绝或发生错误:', error);
+    isRecording.value = false;
+  }
+}
+
+
+ function stopAndUpload() {
+
+
+  isRecording.value = false;
+
+  let audio = amrRec.getBlob();
+  const audioFile: File = new File([audio], 'recording.amr', );
+  uploadAudio(audioFile);
+  amrRec.destroy();
+
+}
+
+async function uploadAudio(file: File) {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const response = await axios.post('https://emm-dev.inspuronline.com/ai/chat/voice', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    sendChatMessage(response.data)
+  } catch (error) {
+    console.error('上传失败:', error);
+  }
+}
+
+
 const handleResize = () => {
   screenWidth.value = window.innerWidth;
 };
