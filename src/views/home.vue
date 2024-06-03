@@ -81,12 +81,12 @@ const pullDownThreshold = 100; // 下拉刷新的阈值，单位为px
 const handleResize = () => {
   screenWidth.value = window.innerWidth;
 };
-const handleTouchStart = (event) => {
+const handleTouchStart = (event: TouchEvent) => {
   startY.value = event.touches[0].clientY;
 };
 
 // 触摸移动
-const handleTouchMove = (event) => {
+const handleTouchMove = (event: TouchEvent) => {
   if (!isPullingDown.value) {
     currentY.value = event.touches[0].clientY;
     const deltaY = currentY.value - startY.value;
