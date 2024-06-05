@@ -8,8 +8,8 @@ variables:
   DOCKER_SNPSHT_REPO: registry.inspures.com/csp/emm
   DOCKER_RELEAS_REPO: registry.inspures.com/csp/emm
 
-before_script:
-  - echo _auth=$(echo -n $ARTIFACTS_REPO_USERNAME:$ARTIFACTS_REPO_PASSWORD | base64) >> .npmrc
+#before_script:
+#  - echo _auth=$(echo -n $ARTIFACTS_REPO_USERNAME:$ARTIFACTS_REPO_PASSWORD | base64) >> .npmrc
 stages:
   - build
   - package
