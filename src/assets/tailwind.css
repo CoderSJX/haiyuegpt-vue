@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer utilities {
+  .no-focus-shadow:focus {
+    box-shadow: none !important; /* 使用 !important 确保样式被优先应用 */
+  }
+  .code-block {
+    overflow-x: auto; /* 启用水平滚动条，当内容超出时 */
+    white-space: pre-wrap; /* 保持代码原有的空格和换行 */
+    word-break: normal; /* 保持单词完整性，避免断词 */
+    max-width: 500px; /* 或者设置为你希望的最大宽度，如 800px */
+  }
+}
+@layer components {
+  .btn {
+    @apply px-4 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-700 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 whitespace-nowrap disabled:bg-blue-300;
+  }
+  .input {
+    @apply px-4 py-2 text-gray-700 bg-white border rounded-md mr-2 sm:mr-4 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 flex-grow;
+  }
+}
