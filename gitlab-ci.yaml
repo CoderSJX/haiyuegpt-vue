@@ -1,0 +1,46 @@
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+variables:
+  DOCKER_IMAGE_NAME: emm-chat-client
+  DOCKER_SNPSHT_REPO: registry.inspures.com/csp/emm
+  DOCKER_RELEAS_REPO: registry.inspures.com/csp/emm
+
+before_script:
+  - echo _auth=$(echo -n $ARTIFACTS_REPO_USERNAME:$ARTIFACTS_REPO_PASSWORD | base64) >> .npmrc
+stages:
+  - build
+  - package
+
+build:
+  stage: build
+  image: node:18-alpine
+  tags:
+    - environment:cloud
+    - runner:docker
+    - namespace:generic
+  only:
+    - master
+  script:
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - dist/ # 或者其他Vue CLI输出的构建目录
+    expire_in: 1 week
+
+package:
+  stage: package
+  image: registry.inspures.com/public/docker.io/library/docker:20.10
+  tags:
+    - environment:dind
+    - runner:docker
+    - namespace:generic
+  only:
+    - master
+  script:
+    - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u $DOCKER_REGISTRY_USERNAME --password-stdin $DOCKER_SNPSHT_REPO
+    - docker buildx create --name multi-platform --use --platform linux/amd64,linux/arm64 --driver docker-container
+    - docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKER_SNPSHT_REPO/$DOCKER_IMAGE_NAME:$CI_COMMIT_REF_NAME . --push
