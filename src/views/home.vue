@@ -26,8 +26,10 @@
             :style="{ maxWidth: screenWidth-80 + 'px' }"
             v-if="item.content"
             v-html="md.render(item.content)"
-          ></div>
+          >
+          </div>
           <Loding v-else />
+
         </div>
       </div>
     </div>
