@@ -12,7 +12,7 @@ COPY ./dist ./dist
 RUN rm /etc/nginx/conf.d/default.conf
 
 # 将 Vue 应用的静态资源从构建阶段的容器复制到 Nginx 服务器的 HTML 目录下
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+COPY /app/dist /usr/share/nginx/html
 
 # 将自定义的 Nginx 配置文件复制到容器中
 COPY nginx.conf /etc/nginx/conf.d
