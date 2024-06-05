@@ -1,5 +1,5 @@
 # 使用官方 Node.js 镜像作为基础镜像
-FROM node:18-alpine AS build-stage
+FROM nginx:stable-alpine AS production-stage
 
 # 设置工作目录
 WORKDIR /app
@@ -7,9 +7,6 @@ WORKDIR /app
 
 # 复制项目源码到容器中
 COPY ./dist ./dist
-
-# 生产环境镜像
-FROM nginx:stable-alpine AS production-stage
 
 # 移除默认的 Nginx 配置文件
 RUN rm /etc/nginx/conf.d/default.conf
