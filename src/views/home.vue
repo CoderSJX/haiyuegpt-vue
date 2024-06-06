@@ -1,52 +1,54 @@
 <template>
-  <div class="flex flex-col h-screen  scrollable-content " ref="scrollableContent"
-       @touchstart="handleTouchStart"
-       @touchmove="handleTouchMove"
-       @touchend="handleTouchEnd"
-       @touchcancel="handleTouchCancel"
-       >
-<!--    <div-->
-<!--      class="flex flex-nowrap fixed w-full items-baseline top-0 px-6 py-4 bg-gray-100"-->
-<!--    >-->
-<!--      <div class="text-2xl font-bold">inGPT</div>-->
-<!--      <div class="ml-4 text-sm text-gray-500">-->
-<!--        inGPT人工智能对话-->
-<!--      </div>-->
-<!--    </div>-->
+  <div class="flex flex-col h-screen   scrollable-content ">
+    <div class="" ref="scrollableContent"
+         @touchstart="handleTouchStart"
+         @touchmove="handleTouchMove"
+         @touchend="handleTouchEnd"
+         @touchcancel="handleTouchCancel"
+    >
+      <!--    <div-->
+      <!--      class="flex flex-nowrap fixed w-full items-baseline top-0 px-6 py-4 bg-gray-100"-->
+      <!--    >-->
+      <!--      <div class="text-2xl font-bold">inGPT</div>-->
+      <!--      <div class="ml-4 text-sm text-gray-500">-->
+      <!--        inGPT人工智能对话-->
+      <!--      </div>-->
+      <!--    </div>-->
 
-    <div class="flex-1 mx-2 mt-2 mb-20" ref="chatListDom">
-      <div
-        class="group flex  px-4 py-3 hover:bg-slate-100 rounded-lg  mt-1.5 "
-        :class="item.role=='assistant'?'justify-start':'justify-end'"
-        v-for="item of messageList.filter((v) => v.role !== 'system')"
-      >
-        <div class="bg-gray-100 rounded-3xl p-5 ">
-          <div
-            class="prose text-sm leading-relaxed "
-            :style="{ maxWidth: screenWidth-80 + 'px' }"
-            v-if="item.content"
-            v-html="md.render(item.content)"
-          >
+      <div class="flex-1 mx-2 mt-2 mb-20 scrollable-content" ref="chatListDom">
+        <div
+            class="group flex  px-4 py-3 hover:bg-slate-100 rounded-lg  mt-1.5 "
+            :class="item.role=='assistant'?'justify-start':'justify-end'"
+            v-for="item of messageList.filter((v) => v.role !== 'system')"
+        >
+          <div class="bg-gray-100 rounded-3xl p-5 ">
+            <div
+                class="prose text-sm leading-relaxed "
+                :style="{ maxWidth: screenWidth-80 + 'px' }"
+                v-if="item.content"
+                v-html="md.render(item.content)"
+            >
+            </div>
+            <Loding v-else />
+
           </div>
-          <Loding v-else />
-
         </div>
       </div>
-    </div>
 
+    </div>
     <div class="sticky bottom-4 w-11/12 m-auto shadow-1xl rounded-3xl p-1 bg-gray-100">
       <div class="flex flex-col justify-end">
         <textarea
-          class="input rounded-2xl bg-transparent no-focus-shadow  outline-none border-0 resize-none"
-          :type="'text'"
-          :placeholder="'请输入'"
+            class="input rounded-2xl bg-transparent no-focus-shadow  outline-none border-0 resize-none"
+            :type="'text'"
+            :placeholder="'请输入'"
 
-          v-model="messageContent"
-          @keydown.enter="isTalking || send()"
+            v-model="messageContent"
+            @keydown.enter="isTalking || send()"
         />
         <div class="touch-record absolute bottom-1 left-0 right-0 flex items-center justify-center" >
           <button    class="shadow-2xl no-zoom" >
-<!--            {{ isRecording ? '松开' : '按下录音' }}-->
+            <!--            {{ isRecording ? '松开' : '按下录音' }}-->
             <voice class="shadow-2xl no-zoom" @touchstart ='startRecording' v-show="!isRecording"  size="30" fill="#1d4ed8" strokeLinecap="square"/>
             <voice-one class="shadow-1xl no-zoom" @touchstart="amrRec.finishRecord()" v-show="isRecording"  size="30" fill="#1d4ed8" strokeLinecap="square"/>
           </button>
@@ -57,7 +59,9 @@
 
       </div>
     </div>
+
   </div>
+
 </template>
 
 <script setup lang="ts">
@@ -101,6 +105,24 @@ const isRecording = ref(false);
 
 onMounted(() => {
   // 初始化逻辑，比如请求麦克风权限
+
+  const isMicrophoneAccessGranted = ref(false);
+  requestMicrophonePermission();
+  async function requestMicrophonePermission() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      // 用户已授权，可以开始使用麦克风
+      isMicrophoneAccessGranted.value = true;
+      console.log('麦克风权限已获取');
+
+      // 如果不需要立即使用流，记得释放资源
+      // stream.getTracks().forEach(track => track.stop());
+    } catch (error) {
+      // 用户拒绝授权或发生其他错误
+      isMicrophoneAccessGranted.value = false;
+      console.error('无法获取麦克风权限:', error);
+    }
+  }
 });
 
 async function startRecording(e: TouchEvent) {
