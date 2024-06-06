@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col  scrollable-content " ref="scrollableContent"
+  <div class="flex flex-col h-screen justify-between scrollable-content " ref="scrollableContent"
        @touchstart="handleTouchStart"
        @touchmove="handleTouchMove"
        @touchend="handleTouchEnd"
