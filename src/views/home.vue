@@ -119,6 +119,7 @@ onMounted(() => {
       // stream.getTracks().forEach(track => track.stop());
     } catch (error) {
       // 用户拒绝授权或发生其他错误
+      alert(error);
       isMicrophoneAccessGranted.value = false;
       console.error('无法获取麦克风权限:', error);
     }
