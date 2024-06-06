@@ -107,7 +107,7 @@ onMounted(() => {
   // 初始化逻辑，比如请求麦克风权限
 
   const isMicrophoneAccessGranted = ref(false);
-  requestMicrophonePermission();
+  // requestMicrophonePermission();
   async function requestMicrophonePermission() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
