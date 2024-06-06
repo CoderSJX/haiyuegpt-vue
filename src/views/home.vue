@@ -83,8 +83,7 @@ const roleAlias = { user: "用户", assistant: "小智", system: "System" };
 const messageList = ref<ChatMessage[]>([
   {
     role: "assistant",
-    content: `你好，我是inGPT语言模型，我可以提供一些常用服务和信息，例如：
-请告诉我你需要哪方面的帮助，我会根据你的需求给你提供相应的信息和建议。`,
+    content: `您好，我是 inGPT，一个由浪潮数字企业 开发的 AI 助手。我可以帮助您解决各种问题和提供所需的信息。`,
   },
 ]);
 
@@ -236,7 +235,7 @@ const sendChatMessage = async (content: string = messageContent.value) => {
     messageList.value.push({ role: "user", content });
     messageList.value.push({ role: "assistant", content: "" });
 
-    const { body, status } = await chat(messageList.value);
+    const { body, status } = await chat(content);
     if (body) {
       const reader = body.getReader();
       await readStream(reader, status);
