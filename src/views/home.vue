@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-screen scrollable-content " ref="scrollableContent"
+  <div class="flex flex-col  scrollable-content " ref="scrollableContent" style="height: 80vh"
        @touchstart="handleTouchStart"
        @touchmove="handleTouchMove"
        @touchend="handleTouchEnd"
