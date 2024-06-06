@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-screen   scrollable-content " style="justify-content: center">
+  <div class="h-screen scrollable-content " style="display: flex;flex-direction: column;justify-content: space-between">
     <div class="" ref="scrollableContent"
          @touchstart="handleTouchStart"
          @touchmove="handleTouchMove"
@@ -15,7 +15,7 @@
       <!--      </div>-->
       <!--    </div>-->
 
-      <div class="flex-1 mx-2 mt-2 mb-20 scrollable-content" ref="chatListDom">
+      <div class=" mx-2 mt-2 mb-20 scrollable-content" ref="chatListDom">
         <div
             class="group flex  px-4 py-3 hover:bg-slate-100 rounded-lg  mt-1.5 "
             :class="item.role=='assistant'?'justify-start':'justify-end'"
@@ -36,7 +36,7 @@
       </div>
 
     </div>
-    <div class=" bottom-4 w-11/12 m-auto shadow-1xl rounded-3xl p-1 bg-gray-100">
+    <div class="  shadow-1xl  p-1 bg-gray-100 " >
       <div class="flex flex-col justify-end relative">
         <textarea
             class="input rounded-2xl bg-transparent no-focus-shadow  outline-none border-0 resize-none"
