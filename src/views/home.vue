@@ -113,6 +113,7 @@ async function startRecording(e: TouchEvent) {
       stopAndUpload()
     })
   } catch (error) {
+    alert("error"+error)
     console.error('录音权限被拒绝或发生错误:', error);
     isRecording.value = false;
   }
