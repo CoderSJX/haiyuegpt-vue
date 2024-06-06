@@ -101,33 +101,35 @@ import axios from 'axios';
 import BenzAMRRecorder from "benz-amr-recorder";
 
 const isRecording = ref(false);
+const isMicrophoneAccessGranted = ref(false);
+// requestMicrophonePermission();
+async function requestMicrophonePermission() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    // 用户已授权，可以开始使用麦克风
+    isMicrophoneAccessGranted.value = true;
+    console.log('麦克风权限已获取');
 
+    // 如果不需要立即使用流，记得释放资源
+    // stream.getTracks().forEach(track => track.stop());
+  } catch (error) {
+    // 用户拒绝授权或发生其他错误
+    alert(error);
+    isMicrophoneAccessGranted.value = false;
+    console.error('无法获取麦克风权限:', error);
+  }
+}
 onMounted(() => {
   // 初始化逻辑，比如请求麦克风权限
 
-  const isMicrophoneAccessGranted = ref(false);
-  // requestMicrophonePermission();
-  async function requestMicrophonePermission() {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      // 用户已授权，可以开始使用麦克风
-      isMicrophoneAccessGranted.value = true;
-      console.log('麦克风权限已获取');
 
-      // 如果不需要立即使用流，记得释放资源
-      // stream.getTracks().forEach(track => track.stop());
-    } catch (error) {
-      // 用户拒绝授权或发生其他错误
-      alert(error);
-      isMicrophoneAccessGranted.value = false;
-      console.error('无法获取麦克风权限:', error);
-    }
-  }
 });
 
 async function startRecording(e: TouchEvent) {
   isRecording.value = true;
   try {
+    await requestMicrophonePermission();
+
     amrRec=new BenzAMRRecorder;
     await amrRec.initWithRecord();
     amrRec.startRecord();
