@@ -49,8 +49,8 @@
         <div class="touch-record absolute bottom-1 left-0 right-0 flex items-center justify-center" >
           <button    class="shadow-2xl no-zoom" >
             <!--            {{ isRecording ? '松开' : '按下录音' }}-->
-            <voice class="shadow-2xl no-zoom" @touchstart ='startRecording' v-show="!isRecording"  size="30" fill="#1d4ed8" strokeLinecap="square"/>
-            <voice-one class="shadow-1xl no-zoom" @touchstart="amrRec.finishRecord()" v-show="isRecording"  size="30" fill="#1d4ed8" strokeLinecap="square"/>
+            <voice class="shadow-2xl no-zoom" @click ='startRecording' v-show="!isRecording"  size="30" fill="#1d4ed8" strokeLinecap="square"/>
+            <voice-one class="shadow-1xl no-zoom" @click="amrRec.finishRecord()" v-show="isRecording"  size="30" fill="#1d4ed8" strokeLinecap="square"/>
           </button>
         </div>
         <button class="btn self-end rounded-2xl text-xs h-8 w-20 flex justify-center items-center mr-1 shadow-blue-400 " :disabled="isTalking" @click="send()">
