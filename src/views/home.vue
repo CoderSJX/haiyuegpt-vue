@@ -236,8 +236,8 @@ const sendChatMessage = async (content: string = messageContent.value) => {
     clearMessageContent();
 
     messageList.value.push({ role: "user", content });
+    const { body, status } = await chat(messageList.value);
     messageList.value.push({ role: "assistant", content: "" });
-    const { body, status } = await chat(content);
     if (body) {
       const reader = body.getReader();
       await readStream(reader, status);
@@ -261,7 +261,6 @@ const readStream = async (
     if (done) break;
 
     const decodedText = decoder.decode(value, { stream: true });
-
     if (status !== 200) {
       const json = JSON.parse(decodedText); // start with "data: "
       const content = json.error.message ?? decodedText;
@@ -277,12 +276,17 @@ const readStream = async (
     for (const line of newLines) {
       if (line.length === 0) continue; // ignore empty message
       if (line.startsWith(":")) continue; // ignore sse comment message
-      if (line === "data: [DONE]") return; //
+      if (line.startsWith("id")) continue; // ignore sse comment message
+      if (line.startsWith("event")) continue; // ignore sse comment message
+
 
       const json = JSON.parse(line.substring(5)); // start with "data: "
+      if(json.output.finish_reason==='stop'){
+        return;
+      }
       const content =
         status === 200
-          ? json.choices[0].message.content ?? ""
+          ? json.output.text ?? ""
           : json.error.message;
       appendLastMessageContent(content);
     }
