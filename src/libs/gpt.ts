@@ -1,6 +1,6 @@
 import type { ChatMessage } from "@/types";
 
-export async function chat(message: string) {
+export async function chat(message: string,messageId:string) {
   try {
     const result = await fetch("https://emm-dev.inspuronline.com/ai/chat/stream", {
       method: "post",

@@ -47,10 +47,10 @@
             @keydown.enter="isTalking || send()"
         />
         <div class="touch-record absolute bottom-1 left-0 right-0 flex items-center justify-center" >
-          <button    class="shadow-2xl no-zoom" >
+          <button    class="shadow-2xl no-zoom" @touchstart ='startRecording'  @touchend="amrRec.finishRecord()"  >
             <!--            {{ isRecording ? '松开' : '按下录音' }}-->
-            <voice class="shadow-2xl no-zoom" @click ='startRecording' v-show="!isRecording"  size="30" fill="#1d4ed8" strokeLinecap="square"/>
-            <voice-one class="shadow-1xl no-zoom" @click="amrRec.finishRecord()" v-show="isRecording"  size="30" fill="#1d4ed8" strokeLinecap="square"/>
+            <voice class="shadow-2xl no-zoom"   v-show="!isRecording" size="30" fill="#1d4ed8" strokeLinecap="square"/>
+            <voice-one class="shadow-1xl no-zoom"  v-show="isRecording"  size="30" fill="#1d4ed8" strokeLinecap="square"/>
           </button>
         </div>
         <button class="btn self-end rounded-2xl text-xs h-8 w-20 flex justify-center items-center mr-1 shadow-blue-400 " :disabled="isTalking" @click="send()">
@@ -73,9 +73,12 @@ import { chat } from "@/libs/gpt";
 import Loding from "@/components/Loding.vue";
 import Copy from "@/components/Copy.vue";
 import { md } from "@/libs/markdown";
+import { v4 as uuid4 } from "uuid";
 
 
 let isTalking = ref(false);
+let messageId:string;
+
 let messageContent = ref("");
 const chatListDom = ref<HTMLDivElement>();
 const decoder = new TextDecoder("utf-8");
@@ -121,7 +124,7 @@ async function requestMicrophonePermission() {
 }
 onMounted(() => {
   // 初始化逻辑，比如请求麦克风权限
-
+  messageId=uuid4().toLowerCase();
 
 });
 
@@ -219,6 +222,7 @@ const reloadPage = () => {
 };
 
 onMounted(() => {
+
   window.addEventListener('resize', handleResize);
 });
 
@@ -236,8 +240,8 @@ const sendChatMessage = async (content: string = messageContent.value) => {
 
     messageList.value.push({ role: "user", content });
     messageList.value.push({ role: "assistant", content: "" });
-
-    const { body, status } = await chat(content);
+    console.log(messageId)
+    const { body, status } = await chat(content,messageId);
     if (body) {
       const reader = body.getReader();
       await readStream(reader, status);
