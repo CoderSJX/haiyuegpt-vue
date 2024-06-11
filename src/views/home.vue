@@ -73,11 +73,9 @@ import { chat } from "@/libs/gpt";
 import Loding from "@/components/Loding.vue";
 import Copy from "@/components/Copy.vue";
 import { md } from "@/libs/markdown";
-import { v4 as uuid4 } from "uuid";
 
 
 let isTalking = ref(false);
-let messageId:string;
 
 let messageContent = ref("");
 const chatListDom = ref<HTMLDivElement>();
@@ -124,7 +122,6 @@ async function requestMicrophonePermission() {
 }
 onMounted(() => {
   // 初始化逻辑，比如请求麦克风权限
-  messageId=uuid4().toLowerCase();
 
 });
 
@@ -240,8 +237,7 @@ const sendChatMessage = async (content: string = messageContent.value) => {
 
     messageList.value.push({ role: "user", content });
     messageList.value.push({ role: "assistant", content: "" });
-    console.log(messageId)
-    const { body, status } = await chat(content,messageId);
+    const { body, status } = await chat(content);
     if (body) {
       const reader = body.getReader();
       await readStream(reader, status);
