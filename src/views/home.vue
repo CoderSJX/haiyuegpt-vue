@@ -312,6 +312,7 @@ onBeforeUnmount(() => {
 
 const sendChatMessage = async (content: string = messageContent.value) => {
   try {
+    isAbort.value=false;
     isTalking.value = true;
     if (messageList.value.length === 2) {
       messageList.value.pop();
