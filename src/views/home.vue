@@ -11,7 +11,7 @@
       <span class="ml-2">AI助理</span>
 
     </div>
-    <div class="flex-1 no-scroll flex flex-col overflow-y-auto px-4 py-2" ref="chatListDom">
+    <div class="flex-1 no-scroll flex flex-col  overflow-y-auto px-4 py-2" ref="chatListDom">
       <div
           class="group flex flex-col px-4 py-4 items-start mb-5 min-w-min  rounded-2xl " style="max-width: 86%"
           :class="item.role=='assistant'?'self-start':'self-end '"
@@ -21,7 +21,7 @@
 
         <div>
           <div
-              class=" leading-relaxed break-all" style="color: #1A1A1A"
+              class="leading-relaxed break-all" style="color: #1A1A1A"
               v-if="item.content"
               v-html="md.render(item.content.replace('\n\n', ''))"
           ></div>
@@ -178,9 +178,9 @@ const scrollToBottom = () => {
   chatListDom.value.scrollTop = chatListDom.value.scrollHeight;
 };
 
-watch(messageList.value, () => nextTick(() => {
-  scrollToBottom()
-}));
+// watch(messageList.value, () => nextTick(() => {
+//   scrollToBottom()
+// }));
 let amrRec: BenzAMRRecorder;
 
 
