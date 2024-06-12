@@ -26,7 +26,9 @@
               v-html="md.render(item.content.replace('\n\n', ''))"
           ></div>
           <Loding v-else/>
-          <div class="flex justify-end items-center">
+          <div v-if="item.role==='assistant'" class="flex justify-start items-center mt-2">
+            <img src="@/assets/icon_浪潮海岳大模型.svg" alt="" >
+            <span class="text-xs ml-1 text " style="color:#999999;">由浪潮海岳大模型提供服务</span>
             <!--            <Copy class="visible" :content="item.content" />-->
           </div>
         </div>
@@ -178,9 +180,9 @@ const scrollToBottom = () => {
   chatListDom.value.scrollTop = chatListDom.value.scrollHeight;
 };
 
-// watch(messageList.value, () => nextTick(() => {
-//   scrollToBottom()
-// }));
+watch(messageList.value, () => nextTick(() => {
+  scrollToBottom()
+}));
 let amrRec: BenzAMRRecorder;
 
 
