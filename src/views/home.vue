@@ -9,7 +9,9 @@
     <div class="flex-none no-scroll flex flex-row items-center justify-center text-center h-16 py-3">
       <img src="@/assets/客服头像@3x.png" alt="用户头像" class="w-9 h-9 ">
       <span class="ml-2">AI助理</span>
-
+      <div class="absolute top-5 left-3">
+        <img src="@/assets/icon_关闭弹窗@1x.svg" alt="">
+      </div>
     </div>
     <div class="flex-1 no-scroll flex flex-col  overflow-y-auto px-4 py-2" ref="chatListDom">
       <div
