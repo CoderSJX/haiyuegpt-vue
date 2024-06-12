@@ -32,7 +32,7 @@
         </div>
       </div>
     </div>
-    <div class="flex-none  p-2 relative">
+    <div class="flex-none no-scroll p-2 relative">
       <div class="input-area  input-bg py-3 px-5 flex  m-auto relative h-11"
            :class="{'gradient-border-input':!isRecording}" style="width: 96%">
         <!--          <input style="width: 100%;height: 100%;" />-->
@@ -60,7 +60,7 @@
                       :placeholder="'有问题尽管问我～'"
 
                       v-model="messageContent"
-                      @keydown.enter="isTalking || send()"
+                      @keydown.enter.prevent="isTalking || send()"
                   />
 
           <div class="flex justify-center items-center  pl-5 " style="border-left: 1px solid rgba(0,0,0,0.2)">
@@ -69,7 +69,7 @@
         </div>
 
         <div class="flex justify-center items-center flex-1" @touchstart="handleTouchStart" @touchend="handleTouchEnd"
-             @touchmove="handleTouchMove">
+             @touchmove="handleTouchMove" @touchcancle="onTouchCancel">
           <img src="@/assets/icon_语音@1x.svg" alt="" >
           <button class="ml-2">按住 说话</button>
         </div>
@@ -89,7 +89,7 @@
 <script setup lang="ts">
 
 import type {ChatMessage} from "@/types";
-import {ref, watch, nextTick, onMounted, onBeforeUnmount} from "vue";
+import {ref, watch, nextTick, onMounted, onBeforeUnmount, onUnmounted} from "vue";
 import {chat} from "@/libs/gpt";
 import Loding from "@/components/Loding.vue";
 import Copy from "@/components/Copy.vue";
@@ -113,7 +113,7 @@ const decoder = new TextDecoder("utf-8");
 const messageList = ref<ChatMessage[]>([
   {
     role: "assistant",
-    content: `您好，我是 inGPT，一个由浪潮数字企业 开发的 AI 助手。我可以帮助您解决各种问题和提供所需的信息。`,
+    content: `👋 您好，我是云加智能助理，一个由浪潮数字企业开发的AI助手。我可以帮助您解决各种问题和提供所需的信息。`,
   },
 ]);
 
@@ -173,7 +173,6 @@ const screenWidth = ref(window.innerWidth);
 
 const scrollToBottom = () => {
   if (!chatListDom.value) return;
-  console.log(chatListDom.value.scrollHeight)
   chatListDom.value.scrollTop = chatListDom.value.scrollHeight;
 };
 
@@ -188,7 +187,8 @@ import BenzAMRRecorder from "benz-amr-recorder";
 
 const isRecording = ref(false);
 const isMicrophoneAccessGranted = ref(false);
-
+let longPressTimer = null;
+const LONG_PRESS_DELAY = 500;
 // requestMicrophonePermission();
 async function requestMicrophonePermission() {
   try {
@@ -213,29 +213,49 @@ onMounted(() => {
 });
 
 async function startRecording(e: TouchEvent) {
-  isRecording.value = true;
-  try {
-    await requestMicrophonePermission();
+  await requestMicrophonePermission();
 
-    amrRec = new BenzAMRRecorder;
-    await amrRec.initWithRecord();
-    amrRec.startRecord();
-    amrRec.onFinishRecord(() => {
-      if (isTargetAreaReached) {
-        return;
-      }
-      stopAndUpload()
-    })
+  if(!isMicrophoneAccessGranted.value){
+    return;
+  }
+  isRecording.value = true;
+
+  try {
+    longPressTimer = setTimeout(async () => {
+      // 达到长按时间，开始录音
+      amrRec = new BenzAMRRecorder;
+      await amrRec.initWithRecord();
+      amrRec.startRecord();
+      amrRec.onFinishRecord(() => {
+        if (isTargetAreaReached) {
+          return;
+        }
+        stopAndUpload()
+      })      // 这里应调用实际的录音开始逻辑
+    }, LONG_PRESS_DELAY);
+
   } catch (error) {
     alert("error" + error)
     console.error('录音权限被拒绝或发生错误:', error);
     isRecording.value = false;
   }
 }
+function onTouchCancel() {
+  clearTimeout(longPressTimer);
+  amrRec.destroy();
+  isTargetAreaReached = false
+  isRecording.value = false;
 
+
+}
+onUnmounted(() => {
+  clearTimeout(longPressTimer);
+});
 
 function stopAndUpload() {
-
+  if(!isMicrophoneAccessGranted.value){
+    return;
+  }
 
   isRecording.value = false;
   if (isTargetAreaReached) {
