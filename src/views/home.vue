@@ -1,71 +1,63 @@
 <template>
-  <div class="h-screen scrollable-content " style="display: flex;flex-direction: column;justify-content: space-between">
-    <div class="" ref="scrollableContent"
-         @touchstart="handleTouchStart"
-         @touchmove="handleTouchMove"
-         @touchend="handleTouchEnd"
-         @touchcancel="handleTouchCancel"
-    >
-      <!--    <div-->
-      <!--      class="flex flex-nowrap fixed w-full items-baseline top-0 px-6 py-4 bg-gray-100"-->
-      <!--    >-->
-      <!--      <div class="text-2xl font-bold">inGPT</div>-->
-      <!--      <div class="ml-4 text-sm text-gray-500">-->
-      <!--        inGPT人工智能对话-->
-      <!--      </div>-->
-      <!--    </div>-->
+  <div class="h-screen flex flex-col rounded-lg">
+    <div class="absolute top-0 left-0 rounded-full -z-10" style="box-shadow:0 0 90px 100px rgba(241,51,255,0.06);"></div>
+    <div class="absolute -top-1/2 left-1/2 rounded-full -z-9" style="box-shadow:0 0 90px 100px rgba(0,149,255,0.12);"></div>
+    <div class="absolute top-0 right-0 rounded-full -z-8" style="box-shadow:0 0 90px 100px rgba(0,241,255,0.08);"></div>
 
-      <div class=" mx-2 mt-2 mb-20 scrollable-content" ref="chatListDom">
-        <div
-            class="group flex  px-4 py-3 hover:bg-slate-100 rounded-lg  mt-1.5 "
-            :class="item.role=='assistant'?'justify-start':'justify-end'"
-            v-for="item of messageList.filter((v) => v.role !== 'system')"
-        >
-          <div class="bg-gray-100 rounded-3xl p-5 ">
-            <div
-                class="prose text-sm leading-relaxed "
-                :style="{ maxWidth: screenWidth-80 + 'px' }"
-                v-if="item.content"
-                v-html="md.render(item.content)"
-            >
-            </div>
-            <Loding v-else />
+    <div class="flex-none  flex flex-row items-center justify-center text-center h-16 py-3">
+        <img src="@/assets/客服头像@3x.png" alt="用户头像" class="w-9 h-9 ">
+        <span class="ml-2">AI助理</span>
 
+    </div>
+    <div class="flex-1 flex flex-col overflow-y-auto px-4 py-2" ref="chatListDom">
+      <div
+          class="group flex flex-col px-4 py-4 items-start mb-5 min-w-min  rounded-2xl " style="max-width: 86%" :class="item.role=='assistant'?'self-start':'self-end '" :style="item.role=='assistant'?'background-color:#fff':'background: #B3D4FF;'"
+          v-for="item of messageList.filter((v) => v.role !== 'system')"
+      >
+
+        <div>
+          <div
+              class="text-sm leading-relaxed" style="color: #1A1A1A"
+              v-if="item.content"
+              v-html="md.render(item.content.replace('\n\n', ''))"
+          ></div>
+          <Loding v-else />
+          <div class="flex justify-end items-center">
+<!--            <Copy class="visible" :content="item.content" />-->
           </div>
         </div>
       </div>
-
     </div>
-    <div class="  shadow-1xl  p-1 bg-gray-100 " >
-      <div class="flex flex-col justify-end relative">
-        <textarea
-            class="input rounded-2xl bg-transparent no-focus-shadow  outline-none border-0 resize-none"
-            :type="'text'"
-            :placeholder="'请输入'"
+    <div class="flex-none  p-2 relative">
+        <div class="input-area  input-bg py-3 px-5 flex  m-auto relative h-11" :class="{'gradient-border-input':!isRecording}" style="width: 96%">
+<!--          <input style="width: 100%;height: 100%;" />-->
+<!--            <button>按住说话</button>-->
+          <div class="record-tip-area flex flex-col justify-center items-center absolute  left-0 right-0 w-full h-10" style="top: -75px" :class="isRecording?'flex':'hidden'" >
+            <img src="@/assets/icon_取消_default@1x.svg"  alt="" >
 
-            v-model="messageContent"
-            @keydown.enter="isTalking || send()"
-        />
-        <div class="touch-record absolute bottom-1 left-0 right-0 flex items-center justify-center" >
-          <button    class="shadow-2xl no-zoom" @touchstart ='startRecording'  @touchend="amrRec.finishRecord()"  >
-            <!--            {{ isRecording ? '松开' : '按下录音' }}-->
-            <voice class="shadow-2xl no-zoom"   v-show="!isRecording" size="30" fill="#1d4ed8" strokeLinecap="square"/>
-            <voice-one class="shadow-1xl no-zoom"  v-show="isRecording"  size="30" fill="#1d4ed8" strokeLinecap="square"/>
-          </button>
+            <span class="mt-1.5" style="font-size: 14px;color: #666666;">松开发送  上滑取消</span>
+          </div>
+          <div class="recording-area absolute bg-blue-500 w-full h-full top-0 right-0 left-0 bottom-0  " style="border-radius: inherit;" :class="isRecording?'flex':'hidden'"></div>
+          <div class="flex justify-center items-center flex-1" @touchstart="startRecording" @touchend="stopAndUpload">
+            <img src="@/assets/icon_语音@1x.svg" alt="">
+            <button class="ml-2">按住  说话</button>
+          </div>
+          
+          <div class="flex justify-center items-center  pl-5 " style="border-left: 1px solid rgba(0,0,0,0.2)">
+            <img src="@/assets/icon_文字输入@1x.svg"  alt="" >
+
+          </div>
+
+
+
         </div>
-        <button class="btn self-end rounded-2xl text-xs h-8 w-20 flex justify-center items-center mr-1 shadow-blue-400 " :disabled="isTalking" @click="send()">
-          {{"发送" }}
-        </button>
-
-      </div>
+      <button></button>
     </div>
-
   </div>
 
 </template>
 
 <script setup lang="ts">
-import { Voice,VoiceOne } from "@icon-park/vue-next";
 
 import type { ChatMessage } from "@/types";
 import { ref, watch, nextTick, onMounted,onBeforeUnmount } from "vue";
@@ -80,7 +72,6 @@ let isTalking = ref(false);
 let messageContent = ref("");
 const chatListDom = ref<HTMLDivElement>();
 const decoder = new TextDecoder("utf-8");
-const roleAlias = { user: "用户", assistant: "小智", system: "System" };
 const messageList = ref<ChatMessage[]>([
   {
     role: "assistant",
@@ -94,7 +85,15 @@ const startY = ref(0);
 const currentY = ref(0);
 const isPullingDown = ref(false);
 const pullDownThreshold = 200; // 下拉刷新的阈值，单位为px
+const scrollToBottom = () => {
+  if (!chatListDom.value) return;
+  console.log(chatListDom.value.scrollHeight)
+  chatListDom.value.scrollTop = chatListDom.value.scrollHeight;
+};
 
+watch(messageList.value, () => nextTick(() => {
+  scrollToBottom()
+}));
 let amrRec:BenzAMRRecorder;
 
 
@@ -307,12 +306,7 @@ const send = () => {
 
 const clearMessageContent = () => (messageContent.value = "");
 
-const scrollToBottom = () => {
-  if (!chatListDom.value) return;
-  scrollTo(0, chatListDom.value.scrollHeight);
-};
 
-watch(messageList.value, () => nextTick(() => scrollToBottom()));
 </script>
 
 <style scoped>
@@ -326,4 +320,7 @@ pre {
 .no-zoom {
   touch-action: manipulation;
 }
+
+
+
 </style>
