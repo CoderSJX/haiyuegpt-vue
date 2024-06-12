@@ -6,12 +6,12 @@
          style="box-shadow:0 0 90px 100px rgba(0,149,255,0.12);"></div>
     <div class="absolute top-0 right-0 rounded-full -z-8" style="box-shadow:0 0 90px 100px rgba(0,241,255,0.08);"></div>
 
-    <div class="flex-none  flex flex-row items-center justify-center text-center h-16 py-3">
+    <div class="flex-none no-scroll flex flex-row items-center justify-center text-center h-16 py-3">
       <img src="@/assets/客服头像@3x.png" alt="用户头像" class="w-9 h-9 ">
       <span class="ml-2">AI助理</span>
 
     </div>
-    <div class="flex-1 flex flex-col overflow-y-auto px-4 py-2" ref="chatListDom">
+    <div class="flex-1 no-scroll flex flex-col overflow-y-auto px-4 py-2" ref="chatListDom">
       <div
           class="group flex flex-col px-4 py-4 items-start mb-5 min-w-min  rounded-2xl " style="max-width: 86%"
           :class="item.role=='assistant'?'self-start':'self-end '"
@@ -32,7 +32,7 @@
         </div>
       </div>
     </div>
-    <div class="flex-none no-scroll p-2 relative mb-6">
+    <div class="flex-none  p-2 relative mb-6">
       <div class="input-area  input-bg py-3 px-5 flex  m-auto relative h-11"
            :class="{'gradient-border-input':!isRecording}" style="width: 96%">
         <!--          <input style="width: 100%;height: 100%;" />-->
