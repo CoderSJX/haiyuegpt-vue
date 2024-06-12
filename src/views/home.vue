@@ -165,6 +165,7 @@ const handleTouchMove = (event: TouchEvent) => {
 
 const handleTouchEnd = () => {
   // 触摸结束时重置状态
+  console.log("touch end")
   // isTargetAreaReached = false;
   stopAndUpload();
 };
@@ -224,13 +225,7 @@ async function startRecording(e: TouchEvent) {
       amrRec = new BenzAMRRecorder;
       await amrRec.initWithRecord();
       amrRec.startRecord();
-      amrRec.onFinishRecord(() => {
-        if (isTargetAreaReached) {
-          return;
-        }
-        stopAndUpload()
-      })      // 这里应调用实际的录音开始逻辑
-
+      return;
 
   } catch (error) {
     alert("error" + error)
@@ -239,6 +234,7 @@ async function startRecording(e: TouchEvent) {
   }
 }
 function onTouchCancel() {
+  console.log(1233)
   amrRec.destroy();
   isTargetAreaReached = false
   isRecording.value = false;
@@ -249,18 +245,23 @@ onUnmounted(() => {
 
 });
 
-function stopAndUpload() {
-  if(!isMicrophoneAccessGranted.value){
+async function stopAndUpload() {
+  if (!isMicrophoneAccessGranted.value) {
     return;
   }
 
   isRecording.value = false;
   if (isTargetAreaReached) {
     amrRec.destroy();
-
     return;
   }
-  let audio = <Blob>amrRec.getBlob();
+  console.log(amrRec)
+  await amrRec.finishRecord();
+  let audio = await <Blob>amrRec.getBlob();
+  if (!audio) {
+    alert("没录上")
+    return;
+  }
   const audioFile: File = new File([audio], 'recording.amr',);
   uploadAudio(audioFile);
   amrRec.destroy();
