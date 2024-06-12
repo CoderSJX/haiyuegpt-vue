@@ -1,5 +1,5 @@
 # 使用官方 Node.js 镜像作为基础镜像
-FROM nginx:stable-alpine AS production-stage
+FROM docker.io/library/nginx:stable-alpine AS production-stage
 
 # 设置工作目录
 WORKDIR /app
