@@ -64,7 +64,8 @@
                   />
 
           <div class="flex justify-center items-center  pl-5 " style="border-left: 1px solid rgba(0,0,0,0.2)">
-            <img src="@/assets/icon_语音@1x.svg" alt="" @click="isKeyboard=false">
+            <img v-show="messageContent!==''" src="@/assets/icon_发送.svg" alt="" @click="sendChatMessage()">
+            <img v-show="messageContent===''" src="@/assets/icon_语音@1x.svg" alt="" @click="isKeyboard=false">
           </div>
         </div>
 
@@ -234,7 +235,6 @@ async function startRecording(e: TouchEvent) {
   }
 }
 function onTouchCancel() {
-  console.log(1233)
   amrRec.destroy();
   isTargetAreaReached = false
   isRecording.value = false;
