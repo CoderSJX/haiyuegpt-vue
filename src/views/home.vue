@@ -187,7 +187,6 @@ import BenzAMRRecorder from "benz-amr-recorder";
 
 const isRecording = ref(false);
 const isMicrophoneAccessGranted = ref(false);
-let longPressTimer = null;
 const LONG_PRESS_DELAY = 500;
 // requestMicrophonePermission();
 async function requestMicrophonePermission() {
@@ -221,7 +220,6 @@ async function startRecording(e: TouchEvent) {
   isRecording.value = true;
 
   try {
-    longPressTimer = setTimeout(async () => {
       // 达到长按时间，开始录音
       amrRec = new BenzAMRRecorder;
       await amrRec.initWithRecord();
@@ -232,7 +230,7 @@ async function startRecording(e: TouchEvent) {
         }
         stopAndUpload()
       })      // 这里应调用实际的录音开始逻辑
-    }, LONG_PRESS_DELAY);
+
 
   } catch (error) {
     alert("error" + error)
@@ -241,15 +239,12 @@ async function startRecording(e: TouchEvent) {
   }
 }
 function onTouchCancel() {
-  clearTimeout(longPressTimer);
   amrRec.destroy();
   isTargetAreaReached = false
   isRecording.value = false;
-  console.log("canceled")
 
 }
 onUnmounted(() => {
-  clearTimeout(longPressTimer);
   amrRec.destroy();
 
 });
