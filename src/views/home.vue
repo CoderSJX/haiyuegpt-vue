@@ -250,6 +250,8 @@ function onTouchCancel() {
 }
 onUnmounted(() => {
   clearTimeout(longPressTimer);
+  amrRec.destroy();
+
 });
 
 function stopAndUpload() {
@@ -259,6 +261,8 @@ function stopAndUpload() {
 
   isRecording.value = false;
   if (isTargetAreaReached) {
+    amrRec.destroy();
+
     return;
   }
   let audio = <Blob>amrRec.getBlob();
