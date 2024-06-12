@@ -25,7 +25,8 @@
               v-if="item.content"
               v-html="md.render(item.content.replace('\n\n', ''))"
           ></div>
-          <Loding v-else/>
+          <Loding v-show="item.role==='assistant'&&!item.content"/>
+          <VoiceLoding v-show="item.role==='user'&&!item.content"/>
           <div v-if="item.role==='assistant'" class="flex justify-start items-center mt-2">
             <img src="@/assets/icon_浪潮海岳大模型.svg" alt="" >
             <span class="text-xs ml-1 text " style="color:#999999;">由浪潮海岳大模型提供服务</span>
@@ -188,6 +189,7 @@ let amrRec: BenzAMRRecorder;
 
 import axios from 'axios';
 import BenzAMRRecorder from "benz-amr-recorder";
+import VoiceLoding from "@/components/VoiceLoding.vue";
 
 const isRecording = ref(false);
 const isMicrophoneAccessGranted = ref(false);

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon_语音识别中</title>
+    <defs>
+        <linearGradient x1="41.4213562%" y1="7.21644966e-14%" x2="67.7626614%" y2="131.313205%" id="linearGradient-1">
+            <stop stop-color="#2A87FF" stop-opacity="0.6" offset="0%"></stop>
+            <stop stop-color="#2A87FF" stop-opacity="0.05" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="5.60662627e-13%" y1="58.5786438%" x2="126.573872%" y2="30.9170537%" id="linearGradient-2">
+            <stop stop-color="#2A87FF" stop-opacity="0.497951267" offset="0%"></stop>
+            <stop stop-color="#2A87FF" stop-opacity="0.05" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="58.5786438%" y1="100%" x2="32.3857898%" y2="-31.0211462%" id="linearGradient-3">
+            <stop stop-color="#2A87FF" stop-opacity="0.6" offset="0%"></stop>
+            <stop stop-color="#2A87FF" stop-opacity="0.05" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="100%" y1="41.4213562%" x2="-25.4818249%" y2="70.6700051%" id="linearGradient-4">
+            <stop stop-color="#2A87FF" stop-opacity="0.6" offset="0%"></stop>
+            <stop stop-color="#2A87FF" stop-opacity="0.05" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="20240611-仅支持富文本" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1.4-语音识别中" transform="translate(-323.000000, -390.000000)">
+            <g id="语音识别中" transform="translate(307.000000, 376.000000)">
+                <g id="icon_语音识别中" transform="translate(16.000000, 14.000000)">
+                    <rect id="矩形" x="0" y="0" width="20" height="20"></rect>
+                    <path d="M3,10 C3,11.9329966 3.78350169,13.6829966 5.05025253,14.9497475" id="路径" stroke="url(#linearGradient-1)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M10,17 C11.9329966,17 13.6829966,16.2164983 14.9497475,14.9497475" id="路径" stroke="url(#linearGradient-2)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M17,10 C17,8.06700338 16.2164983,6.31700338 14.9497475,5.05025253" id="路径" stroke="url(#linearGradient-3)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M10,3 C8.06700338,3 6.31700338,3.78350169 5.05025253,5.05025253" id="路径" stroke="url(#linearGradient-4)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <circle id="Oval-2" fill="#2A87FF" cx="10" cy="3" r="2"></circle>
+                    <circle id="Oval-2-Copy" fill="#2A87FF" cx="10" cy="17" r="2"></circle>
+                    <circle id="Oval-2-Copy-2" fill="#2A87FF" cx="3" cy="10" r="2"></circle>
+                    <circle id="Oval-2-Copy-3" fill="#2A87FF" cx="17" cy="10" r="2"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

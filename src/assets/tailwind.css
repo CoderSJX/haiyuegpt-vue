@@ -60,7 +60,7 @@
   }
 
   .bg-voice{
-    background-image: linear-gradient(121deg, #00D2FF 0%, #2A87FF 100%);
+    background-image: linear-gradient(90deg, #00D2FF 0%, #2986FF 100%);
     box-shadow: 0px 2px 8px 0px rgba(0,44,102,0.1);
   }
   .bg-voice-cancel{
