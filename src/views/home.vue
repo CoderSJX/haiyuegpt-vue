@@ -21,7 +21,7 @@
 
         <div>
           <div
-              class=" leading-relaxed" style="color: #1A1A1A"
+              class=" leading-relaxed break-all" style="color: #1A1A1A"
               v-if="item.content"
               v-html="md.render(item.content.replace('\n\n', ''))"
           ></div>
@@ -33,8 +33,8 @@
       </div>
     </div>
     <div class="flex-none  p-2 relative mb-6">
-      <div class="input-area  input-bg py-3 px-5 flex  m-auto relative h-11"
-           :class="{'gradient-border-input':!isRecording}" style="width: 96%">
+      <div class="input-area  input-bg py-3 px-5 flex  m-auto relative h-12 "
+           :class="{'gradient-border-input':!isRecording}" style="width: 96%;max-height:88px ">
         <!--          <input style="width: 100%;height: 100%;" />-->
         <!--            <button>按住说话</button>-->
         <div class="record-tip-area flex flex-col justify-center items-center absolute  left-0 right-0 w-full h-10 "
