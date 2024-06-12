@@ -21,7 +21,7 @@
 
         <div>
           <div
-              class="text-sm leading-relaxed" style="color: #1A1A1A"
+              class=" leading-relaxed" style="color: #1A1A1A"
               v-if="item.content"
               v-html="md.render(item.content.replace('\n\n', ''))"
           ></div>
@@ -32,12 +32,12 @@
         </div>
       </div>
     </div>
-    <div class="flex-none no-scroll p-2 relative">
+    <div class="flex-none no-scroll p-2 relative mb-6">
       <div class="input-area  input-bg py-3 px-5 flex  m-auto relative h-11"
            :class="{'gradient-border-input':!isRecording}" style="width: 96%">
         <!--          <input style="width: 100%;height: 100%;" />-->
         <!--            <button>按住说话</button>-->
-        <div class="record-tip-area flex flex-col justify-center items-center absolute  left-0 right-0 w-full h-10"
+        <div class="record-tip-area flex flex-col justify-center items-center absolute  left-0 right-0 w-full h-10 "
              style="top: -75px" :class="isRecording?'flex':'hidden'">
           <img :src="currentSVG" alt="" ref="cancelArea">
           <span class="mt-1.5"
@@ -245,7 +245,7 @@ function onTouchCancel() {
   amrRec.destroy();
   isTargetAreaReached = false
   isRecording.value = false;
-
+  console.log("canceled")
 
 }
 onUnmounted(() => {
