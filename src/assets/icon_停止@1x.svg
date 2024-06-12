@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon_停止@1x</title>
+    <g id="20240611-仅支持富文本" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1.6-问题回答中-暂停" transform="translate(-315.000000, -748.000000)">
+            <g id="输入" transform="translate(16.000000, 740.000000)">
+                <g id="icon_停止" transform="translate(299.000000, 8.000000)">
+                    <circle id="椭圆形" stroke="#2A87FF" stroke-width="2" cx="16" cy="16" r="15"></circle>
+                    <rect id="矩形" fill="#2A87FF" x="11" y="11" width="10" height="10" rx="2"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

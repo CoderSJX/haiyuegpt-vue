@@ -69,8 +69,10 @@
                   />
 
           <div class="flex justify-center items-center  pl-5 " style="border-left: 1px solid rgba(0,0,0,0.2)">
-            <img v-show="messageContent!==''" src="@/assets/icon_发送.svg" alt="" @click="sendChatMessage()">
-            <img v-show="messageContent===''" src="@/assets/icon_语音@1x.svg" alt="" @click="isKeyboard=false">
+            <img v-show="!isTalking&&messageContent!==''" src="@/assets/icon_发送.svg" alt="" @click="sendChatMessage()">
+            <img v-show="!isTalking&&messageContent===''" src="@/assets/icon_语音@1x.svg" alt="" @click="isKeyboard=false">
+            <img v-show="isTalking" src="@/assets/icon_停止@1x.svg" alt="" @click="isAbort=true">
+
           </div>
         </div>
 
@@ -81,9 +83,11 @@
         </div>
 
         <div class="flex justify-center items-center  pl-5 " style="border-left: 1px solid rgba(0,0,0,0.2)">
-          <img src="@/assets/icon_文字输入@1x.svg" alt="" @click="isKeyboard=true">
+          <img v-show="!isTalking" src="@/assets/icon_文字输入@1x.svg" alt="" @click="isKeyboard=true">
+          <img v-show="isTalking" src="@/assets/icon_停止@1x.svg" alt="" @click="isAbort=true">
 
         </div>
+
 
 
       </div>
@@ -112,6 +116,7 @@ onMounted(() => {
 });
 
 let isTalking = ref(false);
+let isAbort = ref(false);
 
 let messageContent = ref("");
 const chatListDom = ref<HTMLDivElement>();
@@ -333,7 +338,7 @@ const readStream = async (
 ) => {
   let partialLine = "";
 
-  while (true) {
+  while (!isAbort.value) {
     // eslint-disable-next-line no-await-in-loop
     const {value, done} = await reader.read();
     if (done) break;
