@@ -148,9 +148,18 @@ const handleTouchStart = (event: TouchEvent) => {
 let isKeyboard = ref(false);
 
 const closeWebPop = () => {
-  if (window.imp ) {
+  alert("点击事件")
+  if (window.imp) {
+    alert("有imp")
+  try {
+    window.imp.iWindow.closeWebPop();
+    // 调用imp.js中的someFunction方法
+    alert("调用到了imp")
+  }catch(err) {
+    alert("调用imp出错"+err)
 
-    window.imp.iWindow.closeWebPop(); // 调用imp.js中的someFunction方法
+  }
+
   } else {
     console.error('imp.js中的closeWebPop方法不存在！');
   }
