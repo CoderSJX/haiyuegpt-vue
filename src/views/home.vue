@@ -261,12 +261,15 @@ async function startRecording(e: TouchEvent) {
 }
 function onTouchCancel(evt:TouchEvent) {
   evt.preventDefault();
-  amrRec.destroy();
   isTargetAreaReached = false
   isRecording.value = false;
+  amrRec.destroy();
+
 
 }
 onUnmounted(() => {
+  isTargetAreaReached = false
+  isRecording.value = false;
   amrRec.destroy();
 
 });
