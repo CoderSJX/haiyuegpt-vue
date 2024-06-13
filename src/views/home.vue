@@ -13,7 +13,7 @@
         <img src="@/assets/icon_关闭弹窗@1x.svg" alt="">
       </div>
     </div>
-    <div class=" no-scroll flex flex-col  overflow-y-auto px-4 py-2" ref="chatListDom">
+    <div class="flex-1 no-scroll flex flex-col  overflow-y-auto px-4 py-2" ref="chatListDom">
       <div
           class="group flex flex-col px-4 py-4 items-start mb-5 min-w-min  rounded-2xl " style="max-width: 86%"
           :class="item.role=='assistant'?'self-start':'self-end '"
@@ -296,6 +296,7 @@ async function uploadAudio(file: File) {
     if(response.status == 200){
 
       if(response.data!=''){
+        messageList.value.pop();
         sendChatMessage(response.data)
       }else{
         messageList.value.pop();
