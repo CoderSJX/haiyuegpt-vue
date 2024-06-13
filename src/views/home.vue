@@ -29,10 +29,12 @@
           ></div>
           <Loding v-show="item.role==='assistant'&&!item.content"/>
           <VoiceLoding v-show="item.role==='user'&&!item.content"/>
-          <div v-if="item.role==='assistant'" class="flex justify-start items-center mt-2">
-            <img src="@/assets/icon_浪潮海岳大模型.svg" alt="" >
-            <span class="text-xs ml-1 text " style="color:#999999;">由浪潮海岳大模型提供服务</span>
-            <!--            <Copy class="visible" :content="item.content" />-->
+          <div v-if="item.role==='assistant'" class="flex justify-between items-center mt-2">
+            <div class="flex justify-start items-center ">
+              <img src="@/assets/icon_浪潮海岳大模型.svg" alt="">
+              <span class="text-xs ml-1 text " style="color:#999999;">由浪潮海岳大模型提供服务</span></div>
+
+            <Copy class="relative l" :class="item.content&&!isTalking?'visible':'invisible'" :content="item.content"/>
           </div>
         </div>
       </div>
@@ -40,25 +42,28 @@
     <div class="flex-none  p-2 relative mb-6">
       <div class="input-area  input-bg py-3 px-5 flex  m-auto relative h-12 "
            :class="{'gradient-border-input':!isRecording}" style="width: 96%;max-height:88px ">
-        <!--          <input style="width: 100%;height: 100%;" />-->
-        <!--            <button>按住说话</button>-->
+
         <div class="record-tip-area flex flex-col justify-center items-center absolute  left-0 right-0 w-full h-10 "
              style="top: -75px" :class="isRecording?'flex':'hidden'">
           <img :src="currentSVG" alt="" ref="cancelArea">
           <span class="mt-1.5"
-                style="font-size: 14px;color: #666666;">{{ isTargetAreaReached ? '松开取消' : '松开发送  上滑取消' }}</span>
+                style="font-size: 14px;color: #666666;">{{
+              isTargetAreaReached ? '松开取消' : '松开发送  上滑取消'
+            }}</span>
         </div>
         <div class="recording-area absolute  w-full h-full top-0 right-0 left-0 bottom-0  "
              style="border-radius: inherit;"
              :class="[isRecording?'flex':'hidden',isTargetAreaReached?'bg-voice-cancel':'bg-voice']">
-          <div class="time-box absolute top-0 bottom-0 right-0 left-0 flex justify-center items-center" >
-        <span class="start-taste-line w-full h-full absolute top-0 right-0 left-0 bottom-0 flex justify-center items-center">
+          <div class="time-box absolute top-0 bottom-0 right-0 left-0 flex justify-center items-center">
+        <span
+            class="start-taste-line w-full h-full absolute top-0 right-0 left-0 bottom-0 flex justify-center items-center">
           <hr class="hr" v-for="index in waves" :style="{ animationDelay: randomDelays[index - 1] } "/>
          </span>
           </div>
 
         </div>
-        <div class="keyboard-ares absolute w-full bg-white h-full top-0 right-0 left-0 bottom-0 py-3 px-5  m-auto  "  style="border-radius: inherit; " :class="isKeyboard?'flex':'hidden'">
+        <div class="keyboard-ares absolute w-full bg-white h-full top-0 right-0 left-0 bottom-0 py-3 px-5  m-auto  "
+             style="border-radius: inherit; " :class="isKeyboard?'flex':'hidden'">
                   <textarea
                       class=" bg-transparent  outline-none border-0 resize-none h-full flex-1"
                       :type="'text'"
@@ -69,8 +74,10 @@
                   />
 
           <div class="flex justify-center items-center  pl-5 " style="border-left: 1px solid rgba(0,0,0,0.2)">
-            <img v-show="!isTalking&&messageContent!==''" src="@/assets/icon_发送.svg" alt="" @click="sendChatMessage()">
-            <img v-show="!isTalking&&messageContent===''" src="@/assets/icon_语音@1x.svg" alt="" @click="isKeyboard=false">
+            <img v-show="!isTalking&&messageContent!==''" src="@/assets/icon_发送.svg" alt=""
+                 @click="sendChatMessage()">
+            <img v-show="!isTalking&&messageContent===''" src="@/assets/icon_语音@1x.svg" alt=""
+                 @click="isKeyboard=false">
             <img v-show="isTalking" src="@/assets/icon_停止@1x.svg" alt="" @click="isAbort=true">
 
           </div>
@@ -78,7 +85,7 @@
 
         <div class="flex justify-center items-center flex-1" @touchstart="handleTouchStart" @touchend="handleTouchEnd"
              @touchmove="handleTouchMove" @touchcancle="onTouchCancel">
-          <img src="@/assets/icon_语音@1x.svg" alt="" >
+          <img src="@/assets/icon_语音@1x.svg" alt="">
           <button class="ml-2">按住 说话</button>
         </div>
 
@@ -87,7 +94,6 @@
           <img v-show="isTalking" src="@/assets/icon_停止@1x.svg" alt="" @click="isAbort=true">
 
         </div>
-
 
 
       </div>
@@ -106,12 +112,12 @@ import Copy from "@/components/Copy.vue";
 import {md} from "@/libs/markdown";
 // 初始化一个存储随机延迟的数组
 let randomDelays = ref(['']);
-let waves=40;
+let waves = 40;
 
 onMounted(() => {
   // 页面加载完成后，计算并设置随机延迟
   for (let i = 0; i < waves; i++) {
-    randomDelays.value[i] = `-${Math.random()*1.5}s`; // 生成0到2秒之间的随机延迟
+    randomDelays.value[i] = `-${Math.random() * 1.5}s`; // 生成0到2秒之间的随机延迟
   }
 });
 
@@ -149,12 +155,12 @@ let isKeyboard = ref(false);
 
 const closeWebPop = () => {
   if (window.imp) {
-  try {
-    window.imp.iWindow.closeWebPop();
-    // 调用imp.js中的someFunction方法
-  }catch(err) {
+    try {
+      window.imp.iWindow.closeWebPop();
+      // 调用imp.js中的someFunction方法
+    } catch (err) {
 
-  }
+    }
 
   } else {
     console.error('imp.js中的closeWebPop方法不存在！');
@@ -213,6 +219,7 @@ import VoiceLoding from "@/components/VoiceLoding.vue";
 const isRecording = ref(false);
 const isMicrophoneAccessGranted = ref(false);
 const LONG_PRESS_DELAY = 500;
+
 // requestMicrophonePermission();
 async function requestMicrophonePermission() {
   try {
@@ -237,7 +244,7 @@ onMounted(() => {
 
 async function startRecording(e: TouchEvent) {
   e.preventDefault();
-  if(!isMicrophoneAccessGranted.value){
+  if (!isMicrophoneAccessGranted.value) {
     await requestMicrophonePermission();
 
     return;
@@ -245,11 +252,11 @@ async function startRecording(e: TouchEvent) {
   isRecording.value = true;
 
   try {
-      // 达到长按时间，开始录音
-      amrRec = new BenzAMRRecorder;
-      await amrRec.initWithRecord();
-      amrRec.startRecord();
-      return;
+    // 达到长按时间，开始录音
+    amrRec = new BenzAMRRecorder;
+    await amrRec.initWithRecord();
+    amrRec.startRecord();
+    return;
 
   } catch (error) {
     alert("error" + error)
@@ -257,7 +264,8 @@ async function startRecording(e: TouchEvent) {
     isRecording.value = false;
   }
 }
-function onTouchCancel(evt:TouchEvent) {
+
+function onTouchCancel(evt: TouchEvent) {
   evt.preventDefault();
   isTargetAreaReached = false
   isRecording.value = false;
@@ -265,6 +273,7 @@ function onTouchCancel(evt:TouchEvent) {
 
 
 }
+
 onUnmounted(() => {
   isTargetAreaReached = false
   isRecording.value = false;
@@ -297,7 +306,7 @@ async function stopAndUpload() {
 async function uploadAudio(file: File) {
   const formData = new FormData();
   formData.append('file', file);
-  messageList.value.push({role: "user", content:''});
+  messageList.value.push({role: "user", content: ''});
 
   try {
     const response = await axios.post('https://emm-dev.inspuronline.com/ai/chat/voice', formData, {
@@ -306,16 +315,16 @@ async function uploadAudio(file: File) {
       },
       timeout: 5000,
     });
-    if(response.status == 200){
+    if (response.status == 200) {
 
-      if(response.data!=''){
+      if (response.data != '') {
         messageList.value.pop();
         sendChatMessage(response.data)
-      }else{
+      } else {
         messageList.value.pop();
 
       }
-    }else{
+    } else {
       messageList.value.pop();
     }
   } catch (error) {
@@ -342,13 +351,13 @@ onBeforeUnmount(() => {
 
 const sendChatMessage = async (content: string = messageContent.value) => {
   try {
-    isAbort.value=false;
+    isAbort.value = false;
     isTalking.value = true;
     if (messageList.value.length === 2) {
       messageList.value.pop();
     }
     clearMessageContent();
-    messageList.value.push({role: "user", content:''});
+    messageList.value.push({role: "user", content: ''});
     appendLastMessageContent(content);
     const {body, status} = await chat(messageList.value);
     messageList.value.push({role: "assistant", content: ""});
