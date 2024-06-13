@@ -1,18 +1,18 @@
 <template>
   <div class="h-screen flex flex-col rounded-lg">
-    <div class="absolute top-0 left-0 rounded-full -z-10"
-         style="box-shadow:0 0 90px 100px rgba(241,51,255,0.06);"></div>
-    <div class="absolute -top-1/2 left-1/2 rounded-full -z-9"
-         style="box-shadow:0 0 90px 100px rgba(0,149,255,0.12);"></div>
-    <div class="absolute top-0 right-0 rounded-full -z-8" style="box-shadow:0 0 90px 100px rgba(0,241,255,0.08);"></div>
+<!--    <div class="absolute top-0 left-0 rounded-full -z-10"-->
+<!--         style="box-shadow:0 0 90px 100px rgba(241,51,255,0.06);"></div>-->
+<!--    <div class="absolute -top-1/2 left-1/2 rounded-full -z-9"-->
+<!--         style="box-shadow:0 0 90px 100px rgba(0,149,255,0.12);"></div>-->
+<!--    <div class="absolute top-0 right-0 rounded-full -z-8" style="box-shadow:0 0 90px 100px rgba(0,241,255,0.08);"></div>-->
 
-    <div class="flex-none no-scroll flex flex-row items-center justify-center text-center h-16 py-3">
-      <img src="@/assets/客服头像@3x.png" alt="用户头像" class="w-9 h-9 ">
-      <span class="ml-2">AI助理</span>
-      <div class="absolute top-5 left-3">
-        <img src="@/assets/icon_关闭弹窗@1x.svg" alt="">
-      </div>
-    </div>
+<!--    <div class="flex-none no-scroll flex flex-row items-center justify-center text-center h-16 py-3">-->
+<!--      <img src="@/assets/客服头像@3x.png" alt="用户头像" class="w-9 h-9 ">-->
+<!--      <span class="ml-2">AI助理</span>-->
+<!--      <div class="absolute top-5 left-3">-->
+<!--        <img src="@/assets/icon_关闭弹窗@1x.svg" alt="">-->
+<!--      </div>-->
+<!--    </div>-->
     <div class="flex-1 no-scroll flex flex-col  overflow-y-auto px-4 py-2" ref="chatListDom">
       <div
           class="group flex flex-col px-4 py-4 items-start mb-5 min-w-min  rounded-2xl " style="max-width: 86%"
