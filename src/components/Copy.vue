@@ -3,7 +3,7 @@ import { Copy, Loading, CheckOne } from "@icon-park/vue-next";
 import type { Theme } from "@icon-park/vue-next/lib/runtime";
 import { ref } from "vue";
 
-const porps = defineProps<{ content: string }>();
+const props = defineProps<{ content: string }>();
 const btnConfig: {
   size: number;
   fill: string;
@@ -21,13 +21,40 @@ const btnTips = {
 };
 const btnStatus = ref<"copy" | "loading" | "success" | "error">("copy");
 
-const copyToClipboard = (content: string = porps.content) => {
+function fallbackCopyTextToClipboard(text:string) {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  // 防止textarea显示在页面可视区域
+  textArea.style.position = 'fixed';
+  textArea.style.left = '-9999px';
+  document.body.appendChild(textArea);
+  textArea.select();
+  try {
+    const successful = document.execCommand('copy');
+    const msg = successful ? 'successful' : 'unsuccessful';
+    console.log('Fallback: Copying text command was ' + msg);
+  } catch (err) {
+    console.error('Fallback: Unable to copy to clipboard', err);
+  }
+  document.body.removeChild(textArea);
+}
+
+const copyToClipboard = (content = props.content) => {
   btnStatus.value = "loading";
-  navigator.clipboard
-    .writeText(content)
-    .then(() => setTimeout(() => (btnStatus.value = "success"), 150))
-    .catch(() => (btnStatus.value = "error"))
-    .finally(() => setTimeout(() => (btnStatus.value = "copy"), 1500));
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    console.log("111")
+    navigator.clipboard
+        .writeText(content)
+        .then(() => setTimeout(() => (btnStatus.value = "success"), 150))
+        .catch(() => (btnStatus.value = "error"))
+        .finally(() => setTimeout(() => (btnStatus.value = "copy"), 1500));
+  } else {
+    fallbackCopyTextToClipboard(content);
+    setTimeout(() => (btnStatus.value = "success"), 150); // 假设在旧方法中我们也希望最终状态是"copy"
+    setTimeout(() => (btnStatus.value = "copy"), 1500)// 假设在旧方法中我们也希望最终状态是"copy"
+
+  }
 };
 </script>
 
