@@ -239,10 +239,8 @@ async function startRecording(e: TouchEvent) {
 
   if(!isMicrophoneAccessGranted.value){
     await requestMicrophonePermission();
-    if (!isMicrophoneAccessGranted.value){
-      return;
 
-    }
+    return;
   }
   isRecording.value = true;
 
