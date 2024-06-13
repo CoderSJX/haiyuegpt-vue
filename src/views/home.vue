@@ -317,6 +317,8 @@ async function uploadAudio(file: File) {
       messageList.value.pop();
     }
   } catch (error) {
+    messageList.value.pop();
+
     console.error('上传失败:', error);
   }
 }
