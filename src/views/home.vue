@@ -259,7 +259,8 @@ async function startRecording(e: TouchEvent) {
     isRecording.value = false;
   }
 }
-function onTouchCancel() {
+function onTouchCancel(evt:TouchEvent) {
+  evt.preventDefault();
   amrRec.destroy();
   isTargetAreaReached = false
   isRecording.value = false;
