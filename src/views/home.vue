@@ -240,7 +240,8 @@ async function requestMicrophonePermission() {
 async function checkMicrophonePermission() {
   if (navigator.permissions && navigator.mediaDevices) {
     try {
-      const permissionStatus = await navigator.permissions.query({ name: 'microphone' });
+      const permissionName = "microphone" as PermissionName;
+      const permissionStatus = await navigator.permissions.query({ name: permissionName });
       permissionStatus.onchange = () => {
         // 当权限状态发生变化时更新响应式属性
         isMicrophoneAccessGranted.value = permissionStatus.state === 'granted';
