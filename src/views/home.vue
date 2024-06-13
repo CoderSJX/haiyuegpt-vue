@@ -236,9 +236,34 @@ async function requestMicrophonePermission() {
     console.error('无法获取麦克风权限:', error);
   }
 }
+// 定义一个函数来检查麦克风权限
+async function checkMicrophonePermission() {
+  if (navigator.permissions && navigator.mediaDevices) {
+    try {
+      const permissionStatus = await navigator.permissions.query({ name: 'microphone' });
+      permissionStatus.onchange = () => {
+        // 当权限状态发生变化时更新响应式属性
+        isMicrophoneAccessGranted.value = permissionStatus.state === 'granted';
+      };
 
+      // 根据当前权限状态更新响应式属性
+      isMicrophoneAccessGranted.value = permissionStatus.state === 'granted';
+
+      if (isMicrophoneAccessGranted.value) {
+        console.log('麦克风权限已获得');
+      } else {
+        console.log('未获得麦克风权限');
+      }
+    } catch (error) {
+      console.error('查询麦克风权限时出错:', error);
+    }
+  } else {
+    console.log('当前浏览器不支持权限查询API');
+  }
+}
 onMounted(() => {
   // 初始化逻辑，比如请求麦克风权限
+  checkMicrophonePermission();
 
 });
 
