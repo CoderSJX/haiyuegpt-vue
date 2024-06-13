@@ -145,7 +145,7 @@ const handleTouchStart = (event: TouchEvent) => {
   startRecording(event);
 
 };
-let isKeyboard = ref(false);
+let isKeyboard = ref(true);
 
 
 
