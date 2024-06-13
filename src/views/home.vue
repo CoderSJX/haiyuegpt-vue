@@ -76,17 +76,17 @@
           </div>
         </div>
 
-        <div class="flex justify-center items-center flex-1" @touchstart="handleTouchStart" @touchend="handleTouchEnd"
-             @touchmove="handleTouchMove" @touchcancle="onTouchCancel">
-          <img src="@/assets/icon_语音@1x.svg" alt="" >
-          <button class="ml-2">按住 说话</button>
-        </div>
+<!--        <div class="flex justify-center items-center flex-1" @touchstart="handleTouchStart" @touchend="handleTouchEnd"-->
+<!--             @touchmove="handleTouchMove" @touchcancle="onTouchCancel">-->
+<!--          <img src="@/assets/icon_语音@1x.svg" alt="" >-->
+<!--          <button class="ml-2">按住 说话</button>-->
+<!--        </div>-->
 
-        <div class="flex justify-center items-center  pl-5 " style="border-left: 1px solid rgba(0,0,0,0.2)">
-          <img v-show="!isTalking" src="@/assets/icon_文字输入@1x.svg" alt="" @click="isKeyboard=true">
-          <img v-show="isTalking" src="@/assets/icon_停止@1x.svg" alt="" @click="isAbort=true">
+<!--        <div class="flex justify-center items-center  pl-5 " style="border-left: 1px solid rgba(0,0,0,0.2)">-->
+<!--          <img v-show="!isTalking" src="@/assets/icon_文字输入@1x.svg" alt="" @click="isKeyboard=true">-->
+<!--          <img v-show="isTalking" src="@/assets/icon_停止@1x.svg" alt="" @click="isAbort=true">-->
 
-        </div>
+<!--        </div>-->
 
 
 
@@ -228,8 +228,10 @@ async function startRecording(e: TouchEvent) {
 
   if(!isMicrophoneAccessGranted.value){
     await requestMicrophonePermission();
+    if (!isMicrophoneAccessGranted.value){
+      return;
 
-    return;
+    }
   }
   isRecording.value = true;
 
@@ -267,7 +269,6 @@ async function stopAndUpload() {
     amrRec.destroy();
     return;
   }
-  console.log(amrRec)
   await amrRec.finishRecord();
   let audio = await <Blob>amrRec.getBlob();
   if (!audio) {
@@ -283,14 +284,26 @@ async function stopAndUpload() {
 async function uploadAudio(file: File) {
   const formData = new FormData();
   formData.append('file', file);
+  messageList.value.push({role: "user", content:''});
 
   try {
     const response = await axios.post('https://emm-dev.inspuronline.com/ai/chat/voice', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      timeout: 5000,
     });
-    sendChatMessage(response.data)
+    if(response.status == 200){
+
+      if(response.data!=''){
+        sendChatMessage(response.data)
+      }else{
+        messageList.value.pop();
+
+      }
+    }else{
+      messageList.value.pop();
+    }
   } catch (error) {
     console.error('上传失败:', error);
   }
@@ -319,8 +332,8 @@ const sendChatMessage = async (content: string = messageContent.value) => {
       messageList.value.pop();
     }
     clearMessageContent();
-
-    messageList.value.push({role: "user", content});
+    messageList.value.push({role: "user", content:''});
+    appendLastMessageContent(content);
     const {body, status} = await chat(messageList.value);
     messageList.value.push({role: "assistant", content: ""});
     if (body) {
@@ -328,6 +341,7 @@ const sendChatMessage = async (content: string = messageContent.value) => {
       await readStream(reader, status);
     }
   } catch (error: any) {
+    console.log(error)
     appendLastMessageContent(error);
   } finally {
     isTalking.value = false;
