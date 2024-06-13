@@ -152,7 +152,7 @@ const closeWebPop = () => {
   if (window.imp) {
     alert("有imp")
   try {
-    window.imp.iWindow.closeWebPop();
+    window.imp.iWindow.close();
     // 调用imp.js中的someFunction方法
     alert("调用到了imp")
   }catch(err) {
