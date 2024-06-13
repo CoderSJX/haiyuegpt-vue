@@ -236,7 +236,7 @@ onMounted(() => {
 });
 
 async function startRecording(e: TouchEvent) {
-
+  e.preventDefault();
   if(!isMicrophoneAccessGranted.value){
     await requestMicrophonePermission();
 
