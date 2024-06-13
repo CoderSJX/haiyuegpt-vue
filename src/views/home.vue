@@ -265,15 +265,15 @@ async function checkMicrophonePermission() {
 onMounted(() => {
   // 初始化逻辑，比如请求麦克风权限
   checkMicrophonePermission();
-
 });
 
 async function startRecording(e: TouchEvent) {
   e.preventDefault();
   if (!isMicrophoneAccessGranted.value) {
     await requestMicrophonePermission();
-
-    return;
+    if(!isMicrophoneAccessGranted.value){
+      return;
+    }
   }
   isRecording.value = true;
 
