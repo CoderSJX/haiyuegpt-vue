@@ -271,7 +271,7 @@ async function stopAndUpload() {
   await amrRec.finishRecord();
   let audio = await <Blob>amrRec.getBlob();
   if (!audio) {
-    alert("没录上")
+    alert("没有找到录音文件")
     return;
   }
   const audioFile: File = new File([audio], 'recording.amr',);
