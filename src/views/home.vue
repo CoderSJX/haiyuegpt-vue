@@ -10,7 +10,7 @@
       <img src="@/assets/客服头像@3x.png" alt="用户头像" class="w-9 h-9 ">
       <span class="ml-2">AI助理</span>
       <div class="absolute top-5 left-3">
-        <img src="@/assets/icon_关闭弹窗@1x.svg" alt="" @click="imp.iWindow.closeWebPop()">
+        <img src="@/assets/icon_关闭弹窗@1x.svg" alt="" @click="closeWebPop">
       </div>
     </div>
     <div class="flex-1 no-scroll flex flex-col  overflow-y-auto px-4 py-2" ref="chatListDom">
@@ -147,7 +147,14 @@ const handleTouchStart = (event: TouchEvent) => {
 };
 let isKeyboard = ref(false);
 
+const closeWebPop = () => {
+  if (window.imp ) {
 
+    window.imp.iWindow.closeWebPop(); // 调用imp.js中的someFunction方法
+  } else {
+    console.error('imp.js中的closeWebPop方法不存在！');
+  }
+};
 
 
 const handleTouchMove = (event: TouchEvent) => {
@@ -201,7 +208,6 @@ import VoiceLoding from "@/components/VoiceLoding.vue";
 const isRecording = ref(false);
 const isMicrophoneAccessGranted = ref(false);
 const LONG_PRESS_DELAY = 500;
-import imp from '@/libs/imp';
 // requestMicrophonePermission();
 async function requestMicrophonePermission() {
   try {
